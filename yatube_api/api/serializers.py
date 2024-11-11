@@ -4,7 +4,7 @@ from rest_framework.relations import StringRelatedField
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = StringRelatedField(read_only=True)  # SlugRelatedField(read_only=True)
+    author = StringRelatedField(read_only=True)
 
     class Meta:
         fields = '__all__'

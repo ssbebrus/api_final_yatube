@@ -4,13 +4,19 @@ from rest_framework import viewsets
 from posts.models import Comment, Group, Post, Follow
 from rest_framework.exceptions import PermissionDenied, ValidationError
 
-from .serializers import CommentSerializer, GroupSerializer, PostSerializer, FollowSerializer
+from .serializers import (
+    CommentSerializer,
+    GroupSerializer,
+    PostSerializer,
+    FollowSerializer
+)
 from rest_framework import permissions
 from rest_framework import generics
 from rest_framework import filters
 from rest_framework.pagination import LimitOffsetPagination
 # Create your views here.
 User = get_user_model()
+
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -29,6 +35,7 @@ class PostViewSet(viewsets.ModelViewSet):
         if instance.author != self.request.user:
             raise PermissionDenied('Удаление чужого контента запрещено!')
         super(PostViewSet, self).perform_destroy(instance)
+
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
@@ -59,6 +66,7 @@ class CommentViewSet(viewsets.ModelViewSet):
             raise PermissionDenied('Удаление чужого контента запрещено!')
         super(CommentViewSet, self).perform_destroy(instance)
 
+
 class FollowList(generics.ListCreateAPIView):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
@@ -68,6 +76,7 @@ class FollowList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         return Follow.objects.filter(user=self.request.user)
+
     def perform_create(self, serializer):
         following_username = self.request.data.get('following')
         if not following_username:
