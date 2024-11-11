@@ -1,12 +1,12 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
-from rest_framework.relations import SlugRelatedField
+from rest_framework.relations import SlugRelatedField, StringRelatedField, PrimaryKeyRelatedField
 
-
-from posts.models import Comment, Post
+from posts.models import Comment, Post, Group, Follow
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = SlugRelatedField(slug_field='username', read_only=True)
+    author = StringRelatedField(read_only=True)  # SlugRelatedField(read_only=True)
 
     class Meta:
         fields = '__all__'
@@ -14,10 +14,24 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(
-        read_only=True, slug_field='username'
-    )
+    author = serializers.StringRelatedField(read_only=True)
+    post = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         fields = '__all__'
         model = Comment
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = Group
+
+
+class FollowSerializer(serializers.ModelSerializer):
+    following = StringRelatedField(read_only=True)
+    user = StringRelatedField(read_only=True)
+
+    class Meta:
+        fields = ('user', 'following')
+        model = Follow
