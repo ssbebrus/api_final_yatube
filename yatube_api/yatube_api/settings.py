@@ -21,7 +21,6 @@ INSTALLED_APPS = [
     'djoser',
     'api',
     'posts',
-    'drf_yasg',
     'django_filters',
 ]
 
