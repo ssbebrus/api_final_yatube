@@ -21,7 +21,6 @@ INSTALLED_APPS = [
     'djoser',
     'api',
     'posts',
-    'django_filters',
 ]
 
 REST_FRAMEWORK = {
